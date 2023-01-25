@@ -45,7 +45,8 @@ application {
 //(flyway) 5. configure flyway to connect to database by predefined database credentials and to find flyway sql scripts for db migration and maintenance
 flyway {
     url = dbUrl
-    //schemas = arrayOf(dbSchema)
+    //(flyway) to run migration on dedicated (predefined database schema we set schemas array where we want to apply migration. IF schema does not exists it will be automatically created)
+    schemas = arrayOf(dbSchema)
     user = dbUser
     password = dbPassword
     baselineVersion = "-1"
