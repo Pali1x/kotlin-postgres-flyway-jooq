@@ -16,6 +16,10 @@ val postgresVersion = "42.5.1"
 //(jooq) 2. initialize constant for jooq version
 val jooqVersion = "3.15.3"
 
+//1. (Ktor Server) initialize constants for ktor version and logback version
+val ktorVersion = "2.2.2"
+val logbackVersion = "1.4.5"
+
 plugins {
     kotlin("jvm") version "1.8.0"
     application
@@ -23,6 +27,9 @@ plugins {
     id("org.flywaydb.flyway") version "9.11.0"
     //(jooq) 3. add jooq plugin to be able to run database content generation, generating of table entities, types, DSL api data manipulation
     id("nu.studer.jooq") version "6.0.1"
+
+    //2. (Ktor Server) serialization plugin for our DTOs serialization
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.0"
 }
 
 repositories {
@@ -39,6 +46,15 @@ dependencies {
 
     // (Database Connection) dependency for HikariDatasource connection used for DSL Context of JOOQ
     implementation("com.zaxxer:HikariCP:5.0.1")
+
+    //3. (Ktor server) implementation dependencies
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.8.0")
 
     testImplementation(kotlin("test"))
 }
