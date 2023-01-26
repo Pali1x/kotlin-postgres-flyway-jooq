@@ -37,6 +37,9 @@ dependencies {
     jooqGenerator("org.postgresql:postgresql:$postgresVersion")
     api("org.jooq:jooq:$jooqVersion")
 
+    // (Database Connection) dependency for HikariDatasource connection used for DSL Context of JOOQ
+    implementation("com.zaxxer:HikariCP:5.0.1")
+
     testImplementation(kotlin("test"))
 }
 
