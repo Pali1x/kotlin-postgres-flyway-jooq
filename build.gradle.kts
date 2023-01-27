@@ -59,6 +59,10 @@ dependencies {
     //1. (CORS) adding cors dependency for cross site scripting configuration
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
 
+    //1. (JWT Authentication) adding dependencies for Authentication handling
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
+
     testImplementation(kotlin("test"))
 }
 

@@ -1,6 +1,10 @@
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import configuration.DatasourceConfiguration
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.config.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -11,6 +15,7 @@ import routes.userRoutes
 
 //5 define variable which will be used to access to / manipulation with database
 lateinit var dslContext: DSLContext
+
 //4(Ktor server) define global variable for storing applicationConfiguration
 lateinit var applicationConfig: ApplicationConfig
 
@@ -26,6 +31,7 @@ fun Application.main(environment: ApplicationEnvironment) {
     dslContext = DatasourceConfiguration.createDSLContext(applicationConfig)
 
     //calling configuration modules such as Serialization configuration and Routing configuration
+    configureAuthentication()
     configureCORS()
     configureSerialization()
     configureRouting()
@@ -50,5 +56,19 @@ fun Application.configureRouting() {
 fun Application.configureCORS() {
     install(CORS) {
         anyHost()
+    }
+}
+
+//2. (Authentication) configuration of jwt authentication plugin
+//additional information could be found here: https://ktor.io/docs/jwt.html
+fun Application.configureAuthentication() {
+    install(Authentication) {
+        jwt {
+            verifier(
+                //"jwt.signingKey" is property defined in one of application.conf file which is used at runtime
+                JWT.require(Algorithm.HMAC256(applicationConfig.property("jwt.signingKey").getString())).build()
+            )
+            validate { jwtCredential -> JWTPrincipal(jwtCredential.payload) }
+        }
     }
 }
