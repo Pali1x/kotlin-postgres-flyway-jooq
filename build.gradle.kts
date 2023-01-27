@@ -56,6 +56,9 @@ dependencies {
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.8.0")
 
+    //1. (CORS) adding cors dependency for cross site scripting configuration
+    implementation("io.ktor:ktor-server-cors:$ktorVersion")
+
     testImplementation(kotlin("test"))
 }
 

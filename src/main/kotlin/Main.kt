@@ -4,6 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.config.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
+import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import org.jooq.DSLContext
 import routes.userRoutes
@@ -25,6 +26,7 @@ fun Application.main(environment: ApplicationEnvironment) {
     dslContext = DatasourceConfiguration.createDSLContext(applicationConfig)
 
     //calling configuration modules such as Serialization configuration and Routing configuration
+    configureCORS()
     configureSerialization()
     configureRouting()
 }
@@ -40,5 +42,13 @@ fun Application.configureSerialization() {
 fun Application.configureRouting() {
     routing {
         userRoutes()
+    }
+}
+
+//2. CORS configuration implementation, you could configure different routes and different hosts by standalone configuration, for start, lets just allow all Host requesting our service. IMPORTANT: this is not recommended for production
+//Additional info could be found here https://ktor.io/docs/cors.html
+fun Application.configureCORS() {
+    install(CORS) {
+        anyHost()
     }
 }
